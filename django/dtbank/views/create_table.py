@@ -78,39 +78,30 @@ def index(request):
         #     );
         # """)
 
-        cursor.execute("""
-            CREATE TABLE Article ( -- Article information
-                DOI VARCHAR, -- DOI of the article
-                author_name VARCHAR, -- username first author of the article
-                institute_name VARCHAR, -- institute of the first author
-                PRIMARY KEY (DOI, author_name),
-                FOREIGN KEY (author_name, institute_name) REFERENCES DT_User
-                    ON DELETE SET DEFAULT -- If you delete the author from the users, don't delete the article, set first author of the article to NULL
-                    ON UPDATE CASCADE -- If you update the author from the users, delete the article
-            );
-        """)
-
-        
-
         # cursor.execute("""
-        #     CREATE TABLE Reaction_info ( -- Information about the reaction between the drug
-        #         reaction_id REAL, -- reaction id is at most 8 in length, a real number
-        #         drugbank_id CHAR(7), -- drug that is a part of this reaction
-        #         uniprot_id CHAR(6), -- target protein in the reaction
-        #         affinity REAL, -- affinity of the binding in nM
-        #         measure CHAR(4), -- measure of the interaction, max length is of IC50 = 4
-        #         DOI VARCHAR, -- DOI of the article about this reaction
-        #         PRIMARY KEY (reaction_id),
-        #         FOREIGN KEY (drugbank_id) REFERENCES Drug
-        #             ON DELETE CASCADE -- if a drugbank_id is deleted, delete this reaction
-        #             ON UPDATE CASCADE, -- if a drugbank_id is updated, delete this reaction
-        #         FOREIGN KEY (uniprot_id) REFERENCES Target_protein
-        #             ON DELETE CASCADE -- if a uniprot_id is deleted, delete this reaction
-        #             ON UPDATE CASCADE, -- if a uniprot_id is updated, delete this reaction
-        #         FOREIGN KEY (DOI) REFERENCES Article
-        #             ON DELETE CASCADE -- if a DOI is deleted, delete this reaction
-        #             ON UPDATE CASCADE -- if a DOI is updated, delete this reaction
+        #     CREATE TABLE Article ( -- Article information
+        #         DOI VARCHAR, -- DOI of the article
+        #         author_name VARCHAR, -- username first author of the article
+        #         institute_name VARCHAR, -- institute of the first author
+        #         PRIMARY KEY (DOI, author_name, institute_name)
         #     );
         # """)
-
+        
+        cursor.execute("""
+            CREATE TABLE Reaction_info ( -- Information about the reaction between the drug
+                reaction_id REAL, -- reaction id is at most 8 in length, a real number
+                drugbank_id VARCHAR, -- drug that is a part of this reaction
+                uniprot_id VARCHAR, -- target protein in the reaction
+                affinity REAL, -- affinity of the binding in nM
+                measure VARCHAR, -- measure of the interaction, max length is of IC50 = 4
+                DOI VARCHAR, -- DOI of the article about this reaction
+                PRIMARY KEY (reaction_id),
+                FOREIGN KEY (drugbank_id) REFERENCES Drug
+                    ON DELETE CASCADE -- if a drugbank_id is deleted, delete this reaction
+                    ON UPDATE CASCADE, -- if a drugbank_id is updated, delete this reaction
+                FOREIGN KEY (uniprot_id) REFERENCES Target_protein
+                    ON DELETE CASCADE -- if a uniprot_id is deleted, delete this reaction
+                    ON UPDATE CASCADE -- if a uniprot_id is updated, delete this reaction
+            );
+        """)
     return HttpResponse("Tables are successfully created.")

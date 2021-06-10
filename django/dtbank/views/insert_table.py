@@ -21,8 +21,8 @@ def index(response):
         
         # for i in range(len(df['BindingDB'])):
         #     row = df['UniProt'][df['UniProt']['uniprot_id'] == df['BindingDB']['uniprot_id'].iloc[i]]
-        #     uniprot_id = row['uniprot_id']
-        #     sequence = row['sequence']
+        #     uniprot_id = row['uniprot_id'].tolist()
+        #     sequence = row['sequence'].tolist()
 
         #     if str(uniprot_id) not in visited:
         #         cursor.execute("""
@@ -107,23 +107,21 @@ def index(response):
         #             )
         #         visited.append(d_username)
 
-        visited = []
-        for i in range(len(df['BindingDB'])):
-            DOI = df['BindingDB']['doi'].iloc[i]
-            institute_name = df['BindingDB']['institution']
-            authors = [x.strip() for x in df['BindingDB']['authors'].iloc[i].split(';')]
+        # visited = []
+        # for i in range(len(df['BindingDB'])):
+        #     DOI = df['BindingDB']['doi'].iloc[i]
+        #     institute_name = df['BindingDB']['institution'].iloc[i]
+        #     authors = [x.strip() for x in df['BindingDB']['authors'].iloc[i].split(';')]
             
-            for author in authors:
-                if (DOI, author) not in visited:
-                    cursor.execute("""
-                    INSERT INTO Article(DOI, author_name, institute_name)
-                    VALUES (%s, %s, %s);""", [str(DOI), str(author), str(institute_name)]
-                    )
-                    visited.append((DOI, author))
+        #     for author in authors:
+        #         if (DOI, author, institute_name) not in visited:
+        #             cursor.execute("""
+        #             INSERT INTO Article(DOI, author_name, institute_name)
+        #             VALUES (%s, %s, %s);""", [str(DOI), str(author), str(institute_name)]
+        #             )
+        #             visited.append((DOI, author, institute_name))
 
-
-
-
+        # visited = []
         # for i in range(len(df['BindingDB'])):
         #     reaction_id = df['BindingDB']['reaction_id'].iloc[i]
         #     if reaction_id not in visited:
@@ -132,9 +130,11 @@ def index(response):
         #         affinity = df['BindingDB']['affinity_nM'].iloc[i]
         #         measure = df['BindingDB']['measure'].iloc[i]
         #         DOI = df['BindingDB']['doi'].iloc[i]
+        #         print(uniprot_id)
         #         cursor.execute("""
         #             INSERT INTO Reaction_info(reaction_id, drugbank_id, uniprot_id, affinity, measure, DOI)
         #             VALUES (%s, %s, %s, %s, %s, %s);""", [int(reaction_id), str(drugbank_id), str(uniprot_id), str(affinity), str(measure), str(DOI)]
-        #         )               
+        #         )
+        #         visited.append(reaction_id)       
 
     return HttpResponse("Rows are successfully inserted.")
