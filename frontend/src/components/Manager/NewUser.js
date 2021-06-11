@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useHistory } from "react-router-dom";
 import axios from "axios"
-import {apiUrl} from "../config.json"
+import {apiUrl} from "../../config.json"
 import cogoToast from 'cogo-toast';
 
 const NewUser = (props) => {

@@ -161,10 +161,9 @@ class DeleteProtein(APIView):
         return Response(response)
 
 
-class UpdateContributorsOfPaper(APIView):
+class AddDeleteContributorsOfPaper(APIView):
 
-    def put(self, request):
-
+    def post(self, request):
         reactionId = request.data['reactionId']
         authorName = request.data['authorName']
         username = request.data['username']
@@ -195,6 +194,37 @@ class UpdateContributorsOfPaper(APIView):
                 cursor.execute("""
                     INSERT INTO Article(doi, author_name, institute_name)
                     VALUES (%s, %s, %s);
+                """, [str(doi), str(authorName), str(instituteName)])
+
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+    def delete(self, request):
+        reactionId = request.data['reactionId']
+        authorName = request.data['authorName']
+        username = request.data['username']
+        password = request.data['password']
+        instituteName = ""
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT A.institute_name, A.doi
+                    FROM reaction_info RI, article A
+                    WHERE RI.doi = A.doi and reaction_id = %s
+                    """,
+                               [str(reactionId)]
+                               )
+
+                instituteName, doi = cursor.fetchone()
+
+                cursor.execute("""
+                    DELETE FROM Article
+                    WHERE doi = %s and author_name = %s and institute_name = %s
                 """, [str(doi), str(authorName), str(instituteName)])
 
             response['success'] = True
@@ -454,9 +484,9 @@ class InteractionsOfDrug(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
-                    FROM interacts
-                    WHERE drugbank_id1 = %s;
+                    SELECT I.drugbank_id2, D.drug_name
+                    FROM interacts I, drug D
+                    WHERE drugbank_id1 = %s and drugbank_id2 = D.drugbank_id;
                     """,
                                [str(drugbankId)]
                                )
@@ -477,7 +507,7 @@ class SideEffectsOfDrug(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
+                    SELECT SE.umlscui, SE.side_effect_name
                     FROM has_sider HS, side_effects SE
                     WHERE HS.umlscui = SE.umlscui and drugbank_id = %s;
                     """,
@@ -501,7 +531,7 @@ class InteractingTargets(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
+                    SELECT RI.uniprot_id, TP.target_name
                     FROM reaction_info RI, target_protein TP
                     WHERE RI.uniprot_id = TP.uniprot_id and drugbank_id = %s;
                     """, [str(drugbankId)]
@@ -557,7 +587,7 @@ class InteractingDrugsList(APIView):
 
                 for uniprotId in uniprotIds:
                     cursor.execute("""
-                        SELECT drugbank_id
+                        SELECT DISTINCT(drugbank_id)
                         FROM reaction_info
                         WHERE %s = uniprot_id
                         """, [str(uniprotId)])
@@ -590,7 +620,7 @@ class InteractingTargetsList(APIView):
 
                 for drugbankId in drugbankIds:
                     cursor.execute("""
-                        SELECT uniprot_id
+                        SELECT DISTINCT(uniprot_id)
                         FROM reaction_info
                         WHERE %s = drugbank_id
                         """, [str(drugbankId)])
@@ -613,7 +643,7 @@ class DrugsOfSideEffect(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
+                    SELECT D.drugbank_id, D.drug_name
                     FROM has_sider HS, drug D
                     WHERE HS.drugbank_id = D.drugbank_id and umlscui = %s;
                     """,
@@ -660,15 +690,21 @@ class InteractingDrugsLeastSideEffects(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT DISTINCT D.drugbank_id
+                    SELECT D.drugbank_id, D.drug_name, COUNT(D.drugbank_id)
                     FROM reaction_info RI, drug D, target_protein TP, has_sider HS
                     WHERE RI.drugbank_id = D.drugbank_id and TP.uniprot_id = RI.uniprot_id 
                     and D.drugbank_id = HS.drugbank_id
-                    and TP.uniprot_id = %s;
+                    and TP.uniprot_id = %s
+					GROUP BY D.drugbank_id
+					HAVING COUNT(*) > 0
                     """, [str(uniprotId)]
                 )
 
-                response['data'] = dictfetchall(cursor)
+                data = cursor.fetchall()
+                elem = min(data, key=lambda x: x[2])
+
+                response['data'] = [
+                    {cursor.description[0][0]: elem[0], cursor.description[1][0]: elem[1]}]
 
             response['success'] = True
         except:
@@ -680,7 +716,6 @@ class InteractingDrugsLeastSideEffects(APIView):
 class PaperList(APIView):
 
     def get(self, request):
-
         response = {}
         try:
             with connection.cursor() as cursor:
