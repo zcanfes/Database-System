@@ -31,6 +31,7 @@ const handleUnview = () => {
 const handleFilter = async () => {
   console.log(data)
   const response = await axios.get(`${apiUrl}/drug/filter/interacting_targets/${data.drugbankId}-${data.measurementType}-${data.minAffinity}-${data.maxAffinity}`)
+  console.log(response)
   setTableData(response.data.data)
   setIsTable((isTable) => !isTable)
 }

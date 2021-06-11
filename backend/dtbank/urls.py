@@ -46,14 +46,14 @@ urlpatterns = [
 
     path('api/side_effect/drugs/<str:umlscui>',
          requirements.DrugsOfSideEffect.as_view()),
-     path('api/side_effect/all', requirements.SideEffectAll.as_view()),
+    path('api/side_effect/all', requirements.SideEffectAll.as_view()),
 
 
     path('api/list/paper',
          requirements.PaperList.as_view()),
-    path('api/paper', requirements.UpdateContributorsOfPaper.as_view()),
+    path('api/paper', requirements.AddDeleteContributorsOfPaper.as_view()),
     path('api/paper/all', requirements.PaperContributorAll.as_view()),
-    
+
     path('api/reaction/list', requirements.DrugTargetInteractionAll.as_view()),
 
 
