@@ -5,7 +5,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import cogoToast from 'cogo-toast';
-import { apiUrl } from "../config.json"
+import { apiUrl } from "../../config.json"
 
 const Protein = (props) => {
   const history = useHistory();

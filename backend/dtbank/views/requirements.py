@@ -162,10 +162,9 @@ class DeleteProtein(APIView):
         return Response(response)
 
 
-class UpdateContributorsOfPaper(APIView):
+class AddDeleteContributorsOfPaper(APIView):
 
-    def put(self, request):
-
+    def post(self, request):
         reactionId = request.data['reactionId']
         authorName = request.data['authorName']
         username = request.data['username']
@@ -204,6 +203,37 @@ class UpdateContributorsOfPaper(APIView):
 
         return Response(response)
 
+    def delete(self, request):
+        reactionId = request.data['reactionId']
+        authorName = request.data['authorName']
+        username = request.data['username']
+        password = request.data['password']
+        instituteName = ""
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT A.institute_name, A.doi
+                    FROM reaction_info RI, article A
+                    WHERE RI.doi = A.doi and reaction_id = %s
+                    """,
+                               [str(reactionId)]
+                               )
+
+                instituteName, doi = cursor.fetchone()
+
+                cursor.execute("""
+                    DELETE FROM Article
+                    WHERE doi = %s and author_name = %s and institute_name = %s
+                """, [str(doi), str(authorName), str(instituteName)])
+
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
 
 class InteractionsOfDrug(APIView):
 
@@ -213,9 +243,9 @@ class InteractionsOfDrug(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
-                    FROM interacts
-                    WHERE drugbank_id1 = %s;
+                    SELECT I.drugbank_id2, D.drug_name
+                    FROM interacts I, drug D
+                    WHERE drugbank_id1 = %s and drugbank_id2 = D.drugbank_id;
                     """,
                                [str(drugbankId)]
                                )
@@ -236,7 +266,7 @@ class SideEffectsOfDrug(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
+                    SELECT SE.umlscui, SE.side_effect_name
                     FROM has_sider HS, side_effects SE
                     WHERE HS.umlscui = SE.umlscui and drugbank_id = %s;
                     """,
@@ -260,7 +290,7 @@ class InteractingTargets(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
+                    SELECT RI.uniprot_id, TP.target_name
                     FROM reaction_info RI, target_protein TP
                     WHERE RI.uniprot_id = TP.uniprot_id and drugbank_id = %s;
                     """, [str(drugbankId)]
@@ -316,7 +346,7 @@ class InteractingDrugsList(APIView):
 
                 for uniprotId in uniprotIds:
                     cursor.execute("""
-                        SELECT drugbank_id
+                        SELECT DISTINCT(drugbank_id)
                         FROM reaction_info
                         WHERE %s = uniprot_id
                         """, [str(uniprotId)])
@@ -349,7 +379,7 @@ class InteractingTargetsList(APIView):
 
                 for drugbankId in drugbankIds:
                     cursor.execute("""
-                        SELECT uniprot_id
+                        SELECT DISTINCT(uniprot_id)
                         FROM reaction_info
                         WHERE %s = drugbank_id
                         """, [str(drugbankId)])

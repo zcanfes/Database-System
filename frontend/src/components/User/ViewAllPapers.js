@@ -3,9 +3,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useHistory } from "react-router-dom";
-import TableData from "./TableData"
+import TableData from "../Common/TableData"
 
-const RankInstitutes = (props) => {
+const FieldsOfAllPapers = (props) => {
   const history = useHistory();
 
 const [isTable, setIsTable] = useState(false); 
@@ -18,7 +18,7 @@ const handleInteractions = () => {
       <div className="row justify-content-center">
         <div className="col-11 justify-content-center d-flex mt-4 mb-4">  
                     <Button onClick={handleInteractions}  size="large" variant="contained" color={isTable? "default" : "primary"}>
-                        {isTable ? "Unview" : "View" } rank institutes
+                        {isTable ? "Un" : "" }view the DOI of papers and contributors.
                     </Button>      
        </div>
        {isTable && <TableData />}                 
@@ -27,4 +27,4 @@ const handleInteractions = () => {
   );
 }
 
-export default RankInstitutes;
+export default FieldsOfAllPapers;

@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useHistory } from "react-router-dom";
-import TableData from "./TableData"
+import TableData from "../Common/TableData"
 
 const KeywordForDrug = (props) => {
   const history = useHistory();

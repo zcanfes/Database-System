@@ -13,12 +13,12 @@ const UserHome = (props) => {
   return (
     <div className="container" style={{marginTop: 50}}>
       <div className="row justify-content-center">
-      <div className="col-3 mb-4" >
-          <Link to="/fieldsOfAllDrugs">
-            <Button variant="contained" color="primary">
-            Fields of All Drugs
-            </Button>    
-          </Link> 
+        <div className="col-3 mb-4" >
+            <Link to="/separatelyViewofDrugs">
+              <Button variant="contained" color="primary">
+              Separately View Fields Of Drugs
+              </Button>    
+            </Link> 
         </div>
         <div className="col-3" >
           <Link to="/viewsOfDrug">
@@ -42,9 +42,9 @@ const UserHome = (props) => {
           </Link> 
         </div>
         <div className="col-3" >
-          <Link to="/fieldsOfAllPapers">
+          <Link to="/viewAllPapers">
             <Button variant="contained" color="primary">
-            Fields of All Papers
+            View All Papers
             </Button>    
           </Link> 
         </div>

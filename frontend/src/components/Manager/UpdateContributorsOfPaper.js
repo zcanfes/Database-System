@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from "axios";
-import { apiUrl } from "../config.json"
+import { apiUrl } from "../../config.json"
 
 const Paper = (props) => {
 
