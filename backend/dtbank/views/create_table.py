@@ -7,7 +7,7 @@ def index(request):
     with connection.cursor() as cursor:
         cursor.execute("""
             CREATE TABLE Drug ( -- Drug info in Drugbank
-                drugbank_id CHAR(7), -- maximum length in the given table is 7
+                drugbank_id VARCHAR, -- maximum length in the given table is 7
                 drug_name VARCHAR, -- name of the drug, unique, length is unknown
                 drug_descr VARCHAR, -- description of the drug, length is unknown, this isn't unique since some drug descriptions can be null
                 smiles VARCHAR, -- SMILES of the drug, length can be longer than char, not UNIQUE, some drugs may have the same SMILES
@@ -32,7 +32,7 @@ def index(request):
         cursor.execute("""
             CREATE TABLE Target_protein ( -- Drug's target protein
                 uniprot_id VARCHAR, -- id of the protein
-                sequence VARCHAR UNIQUE, --  aminoacid sequence of the protein, unique to the protein, each aminoacid sequence has 1-to-1 correspondence with their protein
+                sequence VARCHAR, --  aminoacid sequence of the protein, unique to the protein, each aminoacid sequence has 1-to-1 correspondence with their protein
                 target_name VARCHAR, -- protein name
                 PRIMARY KEY (uniprot_id)
             );

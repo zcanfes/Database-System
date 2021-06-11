@@ -31,7 +31,6 @@ const handleAdd = async () => {
       password: "",
       authorName: ""
     })
-    cogoToast.success("Success")
   } catch (e) {
     console.log(e)
     cogoToast.error("Error")
