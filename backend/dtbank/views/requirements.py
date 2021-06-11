@@ -3,7 +3,6 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-import requests
 from django.urls import reverse
 from django.db import connection
 
@@ -198,6 +197,248 @@ class UpdateContributorsOfPaper(APIView):
                     VALUES (%s, %s, %s);
                 """, [str(doi), str(authorName), str(instituteName)])
 
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM drug
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class ProteinAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM target_protein
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+        
+        return Response(response)
+
+
+class SideEffectAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM side_effects
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+        
+        return Response(response)
+
+
+class DrugTargetInteractionAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM reaction_info
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class PaperContributorAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM article
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class UserAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM dt_user
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugNameAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT drug_name
+                    FROM drug
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugbankIdAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT drug_name, drugbank_id
+                    FROM drug
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugSmilesAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT drug_name, smiles
+                    FROM drug
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugDescriptionAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT drug_name, drug_descr
+                    FROM drug
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugTargetAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT Dr.drug_name, TP.target_name
+                    FROM drug DR, reaction_info RI, target_protein TP
+                    WHERE DR.drugbank_id = RI.drugbank_id AND RI.uniprot_id = TP.uniprot_id;
+                    """)
+
+                response['data'] = dictfetchall(cursor)
+            response['success'] = True
+        except:
+            response['success'] = False
+
+        return Response(response)
+
+
+class DrugSideEffectAll(APIView):
+
+    def get(self, request):
+        response = {}
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT Dr.drug_name, SE.side_effect_name
+                    FROM drug DR, has_sider HS, side_effects SE
+                    WHERE DR.drugbank_id = HS.drugbank_id AND HS.umlscui = SE.umlscui;
+                    """)
+
+                response['data'] = dictfetchall(cursor)
             response['success'] = True
         except:
             response['success'] = False
