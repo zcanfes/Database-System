@@ -102,8 +102,7 @@ class InsertUser(APIView):
 class DeleteUpdateDrug(APIView):
 
     def delete(self, request):
-
-        drugbank_id = request.data['drugbank_id']
+        drugbank_id = request.data['drugbankId']
         response = {}
 
         try:

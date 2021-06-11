@@ -21,21 +21,21 @@ const ManagerHome = (props) => {
           </Link> 
         </div>
         <div className="col-3" >
-          <Link to="/drug">
+          <Link to="/deleteUpdateDrug">
             <Button variant="contained" color="primary">
               Update or Delete Drug
             </Button>    
           </Link> 
         </div>
         <div className="col-3" >
-          <Link to="/protein">
+          <Link to="/deleteProtein">
             <Button variant="contained" color="primary">
               Delete Protein
             </Button>    
           </Link> 
         </div>
         <div className="col-3" >
-          <Link to="/paper">
+          <Link to="/updateContributorsOfPaper">
             <Button variant="contained" color="primary">
               update contributors of paper
             </Button>    

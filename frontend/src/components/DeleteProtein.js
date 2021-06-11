@@ -3,13 +3,15 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import cogoToast from 'cogo-toast';
+import { apiUrl } from "../config.json"
 
-const Drug = (props) => {
+const Protein = (props) => {
   const history = useHistory();
 
   const [data, setData] = useState({
-    id: "",
-    value: "",
+    uniprotId: "",
 });
 
 const handleChange = (event) => {
@@ -17,29 +19,19 @@ const handleChange = (event) => {
     setData(data => ({ ...data, [target.name]: target.value }));
 }
 
-const handleUpdate = () => {
-    
+const handleDelete = async () => {
+  await axios.delete(`${apiUrl}/protein`, {data: data})
+  setData({uniprotId: ""});
 }
-
-const handleDelete = () => {
-    
-}
-
   return (
     <div className="container" style={{marginTop: 50}}>
       <div className="row justify-content-center">
         <div className="col-7 mt-4">
-            <TextField className="d-flex" value={data.id} onChange={handleChange} name="id" label="DrugBank ID" variant="outlined" />  
+            <TextField className="d-flex" value={data.uniprotId} onChange={handleChange} name="uniprotId" label="UniProt ID" variant="outlined" />  
         </div>
-            <div className="col-7 mt-4">
-                <TextField className="d-flex" value={data.value} onChange={handleChange} name="value" label="Affinity Value" variant="outlined" />  
-            </div>
-        <div className="col-7 justify-content-between d-flex mt-4">
-                    <Button  onClick={handleUpdate} size="large" variant="contained" color="primary">
-                        Update Drug
-                    </Button>    
+        <div className="col-7 justify-content-end d-flex mt-4">  
                     <Button onClick={handleDelete} size="large" variant="contained" color="secondary">
-                        Delete Drug
+                        Delete Protein
                     </Button>      
         </div>                 
       </div>
@@ -47,4 +39,4 @@ const handleDelete = () => {
   );
 }
 
-export default Drug;
+export default Protein;

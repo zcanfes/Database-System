@@ -3,9 +3,9 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Login from "./components/Login"
 import NewUser from "./components/NewUser"
 import Navbar from "./components/Navbar"
-import Drug from "./components/Drug"
-import Protein from "./components/Protein"
-import Paper from "./components/Paper"
+import DeleteUpdateDrug from "./components/DeleteUpdateDrug"
+import DeleteProtein from "./components/DeleteProtein"
+import UpdateContributorsOfPaper from "./components/UpdateContributorsOfPaper"
 import ManagerHome from './components/ManagerHome';
 import UserHome from './components/UserHome';
 import ViewsOfDrug from './components/ViewsOfDrug';
@@ -31,9 +31,9 @@ function App() {
       <Route path="/keywordForDrug" component={KeywordForDrug} />
        <Route path="/viewsOfProtein" component={ViewsOfProtein} />
         <Route path="/viewsOfDrug" component={ViewsOfDrug} />
-        <Route path="/paper" component={Paper} />
-        <Route path="/protein" component={Protein} />
-        <Route path="/drug" component={Drug} />
+        <Route path="/updateContributorsOfPaper" component={UpdateContributorsOfPaper} />
+        <Route path="/deleteProtein" component={DeleteProtein} />
+        <Route path="/deleteUpdateDrug" component={DeleteUpdateDrug} />
         <Route path="/newUser" component={NewUser} />
         <Route path="/managerHome" component={ManagerHome} />
         <Route path="/userHome" component={UserHome} />
