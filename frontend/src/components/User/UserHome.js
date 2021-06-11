@@ -35,6 +35,13 @@ const UserHome = (props) => {
           </Link> 
         </div>
         <div className="col-3" >
+          <Link to="/viewOfSideEffect">
+            <Button variant="contained" color="primary">
+            Views of Side Effect
+            </Button>    
+          </Link> 
+        </div>
+        <div className="col-3" >
           <Link to="/keywordForDrug">
             <Button variant="contained" color="primary">
             Keyword search for drug

@@ -43,3 +43,22 @@ const handleInteractions = () => {
 }
 
 export default SeparatelyViewofDrug;
+
+{!isTable &&
+  <>
+      <div className="col-11 justify-content-center d-flex mt-4 mb-4">  
+          <Button onClick={handlePapers}  size="large" variant="contained" color="primary">
+          view the DOI of papers and contributors.
+          </Button>      
+
+      </div>
+  </>
+}
+{isTable && 
+  <>
+      <Button className="my-4 col-6" onClick={handleUnview}  size="large" variant="contained" color="default">
+      Unview
+      </Button>
+      <TableData data={tableData} />       
+  </>
+}           

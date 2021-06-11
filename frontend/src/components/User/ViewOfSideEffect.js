@@ -7,11 +7,11 @@ import TableData from "../Common/TableData"
 import { apiUrl } from "../../config.json"
 import axios from "axios"
 
-const KeywordForDrug = (props) => {
+const InteractionsOfDrug = (props) => {
   const history = useHistory();
 
   const [data, setData] = useState({
-    keyword: "",
+    umlscui: "",
 });
 
 const handleChange = (event) => {
@@ -26,7 +26,7 @@ const handleUnview = () => {
 const [tableData, setTableData] = useState([]) 
 
 const handleDrugs = async () => {
-  const response = await axios.get(`${apiUrl}/drug/search/${data.keyword}`)
+  const response = await axios.get(`${apiUrl}/side_effect/drugs/${data.umlscui}`)
   setTableData(response.data.data)
   setIsTable((isTable) => !isTable)
 }
@@ -35,13 +35,13 @@ const handleDrugs = async () => {
     <div className="container" style={{marginTop: 50}}>
       <div className="row justify-content-center">
         <div className="col-7 mt-4">
-            <TextField className="d-flex" value={data.keyword} onChange={handleChange} name="keyword" label="Keyword" variant="outlined" />  
+            <TextField className="d-flex" value={data.umlscui} onChange={handleChange} name="umlscui" label="Umlscui" variant="outlined" />  
         </div>
         {!isTable &&
           <>
-              <div className="col-11 justify-content-center d-flex mt-4 mb-4">  
+              <div className="col-9 justify-content-center d-flex mt-4 mb-4">  
                   <Button onClick={handleDrugs}  size="large" variant="contained" color="primary">
-                  view the drugs
+                  View drugs
                   </Button>      
 
               </div>
@@ -54,10 +54,10 @@ const handleDrugs = async () => {
               </Button>
               <TableData data={tableData} />       
           </>
-        }                 
+        }      
       </div>
     </div>
   );
 }
 
-export default KeywordForDrug;
+export default InteractionsOfDrug;

@@ -19,6 +19,7 @@ import SeparatelyViewOfDrugs from './components/User/SeparatelyViewOfDrugs';
 import ViewAllPapers from './components/User/ViewAllPapers';
 import RankInstitutes from './components/User/RankInstitutes';
 import FilterTargetsOfDrug from './components/User/FilterTargetsOfDrug';
+import ViewOfSideEffect from './components/User/ViewOfSideEffect';
 
 function App() {
   const [type, setType] = useState('user') // user or manager
@@ -28,6 +29,7 @@ function App() {
     <>
       <Navbar type={type} />
       <Switch>
+        <Route path="/viewOfSideEffect" component={ViewOfSideEffect} />
         <Route path="/filterTargetsOfDrug" component={FilterTargetsOfDrug} />
         <Route path="/rankInstitutes" component={RankInstitutes} />
         <Route path="/viewAllPapers" component={ViewAllPapers} />

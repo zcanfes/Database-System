@@ -402,7 +402,7 @@ class DrugsOfSideEffect(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT *
+                    SELECT D.drugbank_id, D.drug_name
                     FROM has_sider HS, drug D
                     WHERE HS.drugbank_id = D.drugbank_id and umlscui = %s;
                     """,
@@ -449,15 +449,21 @@ class InteractingDrugsLeastSideEffects(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
-                    SELECT DISTINCT D.drugbank_id
+                    SELECT D.drugbank_id, D.drug_name, COUNT(D.drugbank_id)
                     FROM reaction_info RI, drug D, target_protein TP, has_sider HS
                     WHERE RI.drugbank_id = D.drugbank_id and TP.uniprot_id = RI.uniprot_id 
                     and D.drugbank_id = HS.drugbank_id
-                    and TP.uniprot_id = %s;
+                    and TP.uniprot_id = %s
+					GROUP BY D.drugbank_id
+					HAVING COUNT(*) > 0
                     """, [str(uniprotId)]
                 )
 
-                response['data'] = dictfetchall(cursor)
+                data = cursor.fetchall()
+                elem = min(data, key=lambda x: x[2])
+
+                response['data'] = [
+                    {cursor.description[0][0]: elem[0], cursor.description[1][0]: elem[1]}]
 
             response['success'] = True
         except:
@@ -469,7 +475,6 @@ class InteractingDrugsLeastSideEffects(APIView):
 class PaperList(APIView):
 
     def get(self, request):
-
         response = {}
         try:
             with connection.cursor() as cursor:

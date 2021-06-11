@@ -34,9 +34,9 @@ urlpatterns = [
          requirements.InteractingDrugsLeastSideEffects.as_view()),
 
     path('api/side_effect/drugs/<str:umlscui>',
-         requirements.DrugsOfSideEffect.as_view()),
+         requirements.DrugsOfSideEffect.as_view()),  # f
 
-    path('api/paper/list/',
+    path('api/list/paper',
          requirements.PaperList.as_view()),
     path('api/paper',
          requirements.AddDeleteContributorsOfPaper.as_view()),  # f

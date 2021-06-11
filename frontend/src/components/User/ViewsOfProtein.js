@@ -70,7 +70,7 @@ const handleDrugsWithLeast = async () => {
               </div>
               <div className="col-9 justify-content-between d-flex mt-4 mb-4">  
                   <Button onClick={handleDrugsWithLeast}  size="large" variant="contained" color="primary">
-                  view the drug(s) with the least amount of side effects that interact with a specific protein.
+                  view the drug(s) with the least amount of side effects that interact with a specific protein
                   </Button>       
               </div>
           </>
