@@ -23,9 +23,6 @@ const Login = (props) => {
   return (
     <AppBar position="static">
     <Toolbar variant="dense">
-        <IconButton edge="start" color="inherit" aria-label="menu">
-        <MenuIcon />
-        </IconButton>
             <Typography style={{cursor: "pointer", marginLeft:80}} onClick={handleNavigate} variant="h6" color="inherit">
                 DTBank
             </Typography>

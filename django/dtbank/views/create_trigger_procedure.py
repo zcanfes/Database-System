@@ -45,4 +45,25 @@ def index(request):
                 FOR EACH ROW EXECUTE PROCEDURE enforce_manager_count();
         """)
 
+        cursor.execute("""
+           CREATE OR REPLACE FUNCTION filter_interacting_targets (
+            measure_type varchar,
+            min_affinity real, 
+            max_affinity real
+            )
+            RETURNS TABLE (
+            uniprot_id varchar,
+            target_name varchar,
+			drugbank_id varchar
+            ) 
+            LANGUAGE plpgsql    
+            as $$
+            BEGIN
+               RETURN QUERY SELECT RI.uniprot_id, TP.target_name, RI.drugbank_id
+			   FROM reaction_info RI, target_protein TP
+			   WHERE RI.uniprot_id = TP.uniprot_id and measure = RI.measure 
+			   and min_affinity <= RI.affinity and max_affinity >= RI.affinity;
+            END;$$
+        """)
+
     return HttpResponse("Triggers are successfully created.")
