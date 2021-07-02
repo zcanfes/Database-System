@@ -21,7 +21,7 @@ def index(request):
                 drugbank_id2 VARCHAR, -- drug that interacts with drug 1
                 PRIMARY KEY (drugbank_id1, drugbank_id2),
                 FOREIGN KEY (drugbank_id1) REFERENCES Drug
-                    ON DELETE NO ACTION -- if drugs are deleted/updated, delete the interaction
+                    ON DELETE CASCADE -- if drugs are deleted/updated, delete the interaction
                     ON UPDATE CASCADE,
                 FOREIGN KEY (drugbank_id2) REFERENCES Drug
                     ON DELETE CASCADE -- if drugs are deleted/updated, delete the interaction
@@ -55,7 +55,7 @@ def index(request):
                     ON DELETE CASCADE -- If side effect id is deleted, delete the relation between the side effect and the drug
                     ON UPDATE CASCADE, -- If side effect id is updated, delete the relation between the side effect and the drug
                 FOREIGN KEY (drugbank_id) REFERENCES Drug
-                    ON DELETE NO ACTION -- If drugbank_id is deleted, delete the relation between the side effect and the drug
+                    ON DELETE CASCADE -- If drugbank_id is deleted, delete the relation between the side effect and the drug
                     ON UPDATE CASCADE -- If drugbank_id is updated, delete the relation between the side effect and the drug
             );
         """)
@@ -97,7 +97,7 @@ def index(request):
                 DOI VARCHAR, -- DOI of the article about this reaction
                 PRIMARY KEY (reaction_id),
                 FOREIGN KEY (drugbank_id) REFERENCES Drug
-                    ON DELETE NO ACTION -- if a drugbank_id is deleted, delete this reaction
+                    ON DELETE CASCADE -- if a drugbank_id is deleted, delete this reaction
                     ON UPDATE CASCADE, -- if a drugbank_id is updated, delete this reaction
                 FOREIGN KEY (uniprot_id) REFERENCES Target_protein
                     ON DELETE CASCADE -- if a uniprot_id is deleted, delete this reaction
@@ -112,6 +112,5 @@ def index(request):
                 PRIMARY KEY(institution_name)
             );
         """)
-
 
     return HttpResponse("Tables are successfully created.")
