@@ -1,5 +1,5 @@
 # Database-System
-
+In this project, a unified Drug - Target database, called DTBank is designed. Using the designed structures, a web-based user interface (UI) is implemented.
 ## Run the Code
 
 ```shell
